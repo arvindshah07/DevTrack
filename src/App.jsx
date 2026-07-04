@@ -1,8 +1,23 @@
+import {Route,Routes} from "react-router-dom";
+import Home from "./pages/Home"
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import Projects from "./pages/Projects";
+import NotFound from "./pages/NotFound"
+// now create routes for all pages
+
+
 function App() {
   return (
-    <button className="bg-amber-400 text-black px-6 py-3 rounded-xl font-semibold hover:bg-amber-500 transition duration-300 cursor-pointer">
-      Test
-    </button>
+  <Routes>
+    <Route path="/" element={<Home/>}/>
+    <Route path="/login" element={<Login/>}/>
+    <Route path="/signup" element={<Signup/>}/>
+    <Route path="/dashboard" element={<Dashboard/>}/>
+    <Route path="/projects" element={<Projects/>}/>
+    <Route path="*" element={<NotFound/>}/>
+  </Routes>
   );
 }
 
