@@ -1,9 +1,11 @@
-import React from 'react'
+import Layout from "../components/layout/Layout";
 
 function Dashboard() {
   return (
-    <div>Dashboard</div>
-  )
+    <Layout>
+      <h1 className="text-3xl font-bold ">Dashboard</h1>
+    </Layout>
+  );
 }
 
-export default Dashboard
+export default Dashboard;
