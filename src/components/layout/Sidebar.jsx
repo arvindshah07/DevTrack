@@ -4,7 +4,7 @@ function Sidebar() {
   return (
     <div className="w-64 min-h-screen bg-white border-r p-4">
       <div className="flex flex-col gap-3">
-              <NavLink to="/dashboard"
+      <NavLink to="/dashboard"
       className={({isActive})=>isActive ? "bg-blue-200 text-white px-4 py-2 rounded-lg" :
        "bg-gray-200 text-black px-4 py-2 rounded-lg"}
       >
