@@ -8,7 +8,7 @@ function Navbar() {
        DevTrack
       </div>
       <h1 className="flex items-center pr-5 text-2xl font-bold text-white cursor-pointer hover:text-gray-200 transition">
-        Arvind
+        Arvind 
         </h1>
   </div>
     </>
