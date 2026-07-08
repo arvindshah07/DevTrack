@@ -23,6 +23,7 @@ function Projects() {
 
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
+  // const[deleteProject,setDeleteProject]=useState(false);
 
   function addProject() {
     if (projectName.trim() === "") return;
@@ -32,14 +33,18 @@ function Projects() {
       {
         id: projects.length + 1,
         title: projectName,
-        status,
+        status
       },
     ]);
 
     setProjectName("");
     setStatus("Pending");
   }
-
+  function deleteProject(id) {
+  setProjects(
+    projects.filter((project) => project.id !== id)
+  );
+  }
   return (
     <Layout>
       {/* Header */}
@@ -102,9 +107,11 @@ function Projects() {
       <div className="flex flex-col gap-5">
         {projects.map((project) => (
           <ProjectCard
+            id={project.id}
             key={project.id}
             title={project.title}
             status={project.status}
+            deleteProject={deleteProject}
           />
         ))}
       </div>
