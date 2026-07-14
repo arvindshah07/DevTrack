@@ -23,6 +23,7 @@ function Projects() {
 
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
+  const [editingId,setEditingId]=useState(null);
   // const[deleteProject,setDeleteProject]=useState(false);
 
   function addProject() {
@@ -44,6 +45,13 @@ function Projects() {
   setProjects(
     projects.filter((project) => project.id !== id)
   );
+  }
+
+  function editProject(id){
+    const project=projects.find((project)=>project.id === id);
+    setEditingId(project.id);
+    setProjectName(project.title);
+    setStatus(project.status);
   }
   return (
     <Layout>
