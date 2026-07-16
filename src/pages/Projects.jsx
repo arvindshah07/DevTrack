@@ -24,7 +24,7 @@ function Projects() {
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
   const [editingId,setEditingId]=useState(null);
-  // const[deleteProject,setDeleteProject]=useState(false);
+  //const[deleteProject,setDeleteProject]=useState(false);
 
   function addProject() {
     if (projectName.trim() === "") return;
@@ -47,12 +47,41 @@ function Projects() {
   );
   }
 
-  function editProject(id){
-    const project=projects.find((project)=>project.id === id);
-    setEditingId(project.id);
-    setProjectName(project.title);
-    setStatus(project.status);
+function editProject(id) {
+  console.log("Before:", editingId);
+
+  const project = projects.find((project) => project.id === id);
+
+  setEditingId(project.id);
+  setProjectName(project.title);
+  setStatus(project.status);
+
+  console.log("After setState called");
+}
+
+  function updateProject() {
+    setProjects(
+      projects.map((project)=>{
+        if(project.id === editingId){
+          return{
+            ...project,
+            title:projectName,
+            status:status,
+          };
+        }
+        return project ;
+      })
+    );
+    setEditingId(null);
+    setProjectName("");
+    setStatus("Pending");
+    console.log({
+  editingId,
+  projectName,
+  status,
+});
   }
+  
   return (
     <Layout>
       {/* Header */}
@@ -103,10 +132,10 @@ function Projects() {
 
           {/* Button */}
           <button
-            onClick={addProject}
+            onClick={editingId===null ? addProject :updateProject}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
           >
-            + Add Project
+            {editingId===null ? "+Add Project" : "Save Changes"}
           </button>
         </div>
       </div>
@@ -120,6 +149,7 @@ function Projects() {
             title={project.title}
             status={project.status}
             deleteProject={deleteProject}
+            editProject={editProject}
           />
         ))}
       </div>
