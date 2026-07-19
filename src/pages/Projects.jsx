@@ -47,17 +47,13 @@ function Projects() {
   );
   }
 
-function editProject(id) {
-  console.log("Before:", editingId);
+  function editProject(id) {
 
   const project = projects.find((project) => project.id === id);
-
   setEditingId(project.id);
   setProjectName(project.title);
   setStatus(project.status);
-
-  console.log("After setState called");
-}
+  }
 
   function updateProject() {
     setProjects(
@@ -81,6 +77,11 @@ function editProject(id) {
   status,
 });
   }
+  console.log("Render:", {
+  editingId,
+  projectName,
+  status,
+});
   
   return (
     <Layout>
@@ -90,6 +91,7 @@ function editProject(id) {
           <h1 className="text-4xl font-bold text-gray-800">
             Projects
           </h1>
+          
           <p className="text-gray-500 mt-1">
             Manage all your projects efficiently.
           </p>
@@ -101,18 +103,15 @@ function editProject(id) {
         <div className="flex gap-4 items-end">
           {/* Project Name */}
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Project Name
-            </label>
+  <label>Project Name</label>
 
-            <input
-              type="text"
-              placeholder="Enter Project Name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
+  <input
+    type="text"
+    value={projectName}
+    onChange={(e) => setProjectName(e.target.value)}
+    className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
 
           {/* Status */}
           <div className="w-48">
@@ -129,14 +128,15 @@ function editProject(id) {
               <option value="Completed">Completed</option>
             </select>
           </div>
+          
+          
+        <button
+      onClick={editingId === null ? addProject : updateProject}
+      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
+    >
+      {editingId === null ? "+ Add Project" : "Save Changes"}
+        </button>
 
-          {/* Button */}
-          <button
-            onClick={editingId===null ? addProject :updateProject}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
-          >
-            {editingId===null ? "+Add Project" : "Save Changes"}
-          </button>
         </div>
       </div>
 
