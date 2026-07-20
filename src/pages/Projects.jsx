@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import ProjectCard from "../components/projects/ProjectCard";
 
@@ -24,7 +24,16 @@ function Projects() {
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
   const [editingId,setEditingId]=useState(null);
-  //const[deleteProject,setDeleteProject]=useState(false);
+  useEffect(()=>{
+    const savedProjects=localStorage.getItem("projects");
+    if(savedProjects){
+      setProjects(JSON.parse(savedProjects));
+    }
+  },[]);
+
+  useEffect(()=>{
+   localStorage.setItem("projects",JSON.stringify(projects));
+  },[projects]) ;
 
   function addProject() {
     if (projectName.trim() === "") return;
