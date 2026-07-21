@@ -24,13 +24,29 @@ function Projects() {
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
   const [editingId,setEditingId]=useState(null);
+  const [searchTerm,setSearchTerm]=useState("");
   useEffect(()=>{
     const savedProjects=localStorage.getItem("projects");
     if(savedProjects){
       setProjects(JSON.parse(savedProjects));
     }
   },[]);
+ 
+  const totalProjects=projects.length ;
+  const completedProjects=projects.filter(
+    (project)=> project.status === "Completed"
+  ).length ;
 
+  const pendingProjects=projects.filter(
+    (project)=>project.status === "Pending"
+  ).length ;
+  
+  const filteredProjects=projects.filter((project)=>
+  project.title
+  .toLowerCase()
+  .includes(searchTerm.toLowerCase())
+  );
+  
   useEffect(()=>{
    localStorage.setItem("projects",JSON.stringify(projects));
   },[projects]) ;
@@ -50,6 +66,7 @@ function Projects() {
     setProjectName("");
     setStatus("Pending");
   }
+
   function deleteProject(id) {
   setProjects(
     projects.filter((project) => project.id !== id)
@@ -86,11 +103,6 @@ function Projects() {
   status,
 });
   }
-  console.log("Render:", {
-  editingId,
-  projectName,
-  status,
-});
   
   return (
     <Layout>
@@ -106,7 +118,7 @@ function Projects() {
           </p>
         </div>
       </div>
-
+      
       {/* Form */}
       <div className="bg-white shadow-md rounded-xl p-6 mb-8">
         <div className="flex gap-4 items-end">
@@ -149,18 +161,45 @@ function Projects() {
         </div>
       </div>
 
+      <input
+      type="text"
+      placeholder="🔍 Search Projects..."
+      value={searchTerm}
+      onChange={(e)=>setSearchTerm(e.target.value)}
+      className="w-full p-3 px-2 border rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <div className="grid grid-cols-3 gap-4 ">
+       <div className="bg-white rounded-xl shadow-md p-6 text-center">
+        <h3 className="text-gray-500">Total Projects</h3>
+        <p className="text-3xl font-bold text-blue-600"> {totalProjects}</p></div>
+       <div className="bg-white rounded-xl shadow-md p-6 text-center">
+        <h3 className="text-gray-500">Completed Projects</h3>
+        <p className="text-3xl font-bold text-green-600"> {completedProjects}</p></div>
+       <div className="bg-white rounded-xl shadow-md p-6 text-center">
+        <h3 className="text-gray-500">Pending Projects</h3>
+        <p className="text-3xl font-bold text-yellow-600"> {pendingProjects}</p></div>
+      </div>
+
       {/* Project List */}
       <div className="flex flex-col gap-5">
-        {projects.map((project) => (
+        {filteredProjects.length === 0 ? (
+          <p  className="text-center text-gray-500 text-lg">
+            🔍 No projects found
+          </p>
+        ) :
+        (
+            filteredProjects.map((project) => (
           <ProjectCard
-            id={project.id}
             key={project.id}
+            id={project.id}            
             title={project.title}
             status={project.status}
             deleteProject={deleteProject}
             editProject={editProject}
           />
-        ))}
+        ))
+        )}
       </div>
     </Layout>
   );
