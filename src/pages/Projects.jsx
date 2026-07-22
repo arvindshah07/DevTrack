@@ -25,6 +25,7 @@ function Projects() {
   const [status, setStatus] = useState("Pending");
   const [editingId,setEditingId]=useState(null);
   const [searchTerm,setSearchTerm]=useState("");
+  const [sortOption, setSortOption] = useState("Default");
   useEffect(()=>{
     const savedProjects=localStorage.getItem("projects");
     if(savedProjects){
@@ -46,13 +47,22 @@ function Projects() {
   .toLowerCase()
   .includes(searchTerm.toLowerCase())
   );
-  
   useEffect(()=>{
    localStorage.setItem("projects",JSON.stringify(projects));
   },[projects]) ;
 
   function addProject() {
     if (projectName.trim() === "") return;
+      const projectExists = projects.some(
+      (project)=>
+        project.title.toLowerCase().trim()===
+      projectName.toLowerCase().trim()
+        );
+
+    if (projectExists) {
+    alert("Project already exists!");
+    return;
+    }
 
     setProjects([
       ...projects,
@@ -97,12 +107,31 @@ function Projects() {
     setEditingId(null);
     setProjectName("");
     setStatus("Pending");
-    console.log({
-  editingId,
-  projectName,
-  status,
-});
   }
+ 
+  const sortedProjects=[...filteredProjects];
+
+    if(sortOption==="A-Z"){
+       sortedProjects.sort((a,b)=>
+       a.title.localeCompare(b.title)
+       );
+    }
+    else if(sortOption==="Z-A"){
+      sortedProjects.sort((a,b)=>
+      b.title.localeCompare(a.title)
+    )
+    }
+    else if(sortOption==="Completed"){
+      sortedProjects.sort((a,b)=>
+        a.status.localeCompare(b.status)
+      )
+    }
+    else if (sortOption === "Pending"){
+      sortedProjects.sort((a,b)=>
+      b.status.localeCompare(a.status)
+    )
+    }        
+  
   
   return (
     <Layout>
@@ -166,8 +195,27 @@ function Projects() {
       placeholder="🔍 Search Projects..."
       value={searchTerm}
       onChange={(e)=>setSearchTerm(e.target.value)}
-      className="w-full p-3 px-2 border rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="w-full p-3 px-2 border rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"          
       />
+      <div>
+        <div className="w-48">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Sort by
+            </label>
+
+            <select
+              value={sortOption}
+              onChange={(e) => setSortOption(e.target.value)}
+              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            >
+              <option value="Default">Default</option>
+              <option value="A-Z">A-Z</option>
+              <option value="Z-A">Z-A</option>
+              <option value="Completed">Completed First</option>
+              <option value="Pending">Pending First</option>
+            </select>
+          </div>
+      </div>
 
       <div className="grid grid-cols-3 gap-4 ">
        <div className="bg-white rounded-xl shadow-md p-6 text-center">
@@ -189,7 +237,7 @@ function Projects() {
           </p>
         ) :
         (
-            filteredProjects.map((project) => (
+            sortedProjects.map((project) => (
           <ProjectCard
             key={project.id}
             id={project.id}            
