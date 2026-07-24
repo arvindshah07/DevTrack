@@ -1,6 +1,10 @@
 import React, { useState , useEffect } from "react";
 import Layout from "../components/layout/Layout";
 import ProjectCard from "../components/projects/ProjectCard";
+import ProjectForm from "../components/projects/ProjectForm";
+import SearchAndSort from "../components/projects/SearchAndSort";
+import StatsSection from "../components/projects/StatsSection";
+import ProjectList from "../components/projects/ProjectList";
 
 function Projects() {
   const [projects, setProjects] = useState([
@@ -136,119 +140,41 @@ function Projects() {
   return (
     <Layout>
       {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-4xl font-bold text-gray-800">
-            Projects
-          </h1>
-          
-          <p className="text-gray-500 mt-1">
-            Manage all your projects efficiently.
-          </p>
-        </div>
-      </div>
-      
-      {/* Form */}
-      <div className="bg-white shadow-md rounded-xl p-6 mb-8">
-        <div className="flex gap-4 items-end">
-          {/* Project Name */}
-          <div className="flex-1">
-  <label>Project Name</label>
 
-  <input
-    type="text"
-    value={projectName}
-    onChange={(e) => setProjectName(e.target.value)}
-    className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-  />
-</div>
+     {/* form  */}
+     <ProjectForm
+      projectName={projectName}
+      setProjectName={setProjectName}
+      status={status}
+      setStatus={setStatus}
+      editingId={editingId}
+      addProject={addProject}
+      updateProject={updateProject}     
+     />
 
-          {/* Status */}
-          <div className="w-48">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Status
-            </label>
 
-            <select
-              value={status}
-              onChange={(e) => setStatus(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="Pending">Pending</option>
-              <option value="Completed">Completed</option>
-            </select>
-          </div>
-          
-          
-        <button
-      onClick={editingId === null ? addProject : updateProject}
-      className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200"
-    >
-      {editingId === null ? "+ Add Project" : "Save Changes"}
-        </button>
+{/* serach and sort project */}
+     <SearchAndSort
+     searchTerm={searchTerm}
+     setSearchTerm={setSearchTerm}
+     sortOption={sortOption}
+     setSortOption={setSortOption}
+     />
 
-        </div>
-      </div>
-
-      <input
-      type="text"
-      placeholder="🔍 Search Projects..."
-      value={searchTerm}
-      onChange={(e)=>setSearchTerm(e.target.value)}
-      className="w-full p-3 px-2 border rounded-lg mb-5 focus:outline-none focus:ring-2 focus:ring-blue-500"          
-      />
-      <div>
-        <div className="w-48">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Sort by
-            </label>
-
-            <select
-              value={sortOption}
-              onChange={(e) => setSortOption(e.target.value)}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
-            >
-              <option value="Default">Default</option>
-              <option value="A-Z">A-Z</option>
-              <option value="Z-A">Z-A</option>
-              <option value="Completed">Completed First</option>
-              <option value="Pending">Pending First</option>
-            </select>
-          </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-4 ">
-       <div className="bg-white rounded-xl shadow-md p-6 text-center">
-        <h3 className="text-gray-500">Total Projects</h3>
-        <p className="text-3xl font-bold text-blue-600"> {totalProjects}</p></div>
-       <div className="bg-white rounded-xl shadow-md p-6 text-center">
-        <h3 className="text-gray-500">Completed Projects</h3>
-        <p className="text-3xl font-bold text-green-600"> {completedProjects}</p></div>
-       <div className="bg-white rounded-xl shadow-md p-6 text-center">
-        <h3 className="text-gray-500">Pending Projects</h3>
-        <p className="text-3xl font-bold text-yellow-600"> {pendingProjects}</p></div>
-      </div>
+{/* statsSection */}
+    <StatsSection
+      totalProjects={totalProjects}
+      completedProjects={completedProjects}
+      pendingProjects={pendingProjects}
+    />
 
       {/* Project List */}
-      <div className="flex flex-col gap-5">
-        {filteredProjects.length === 0 ? (
-          <p  className="text-center text-gray-500 text-lg">
-            🔍 No projects found
-          </p>
-        ) :
-        (
-            sortedProjects.map((project) => (
-          <ProjectCard
-            key={project.id}
-            id={project.id}            
-            title={project.title}
-            status={project.status}
-            deleteProject={deleteProject}
-            editProject={editProject}
-          />
-        ))
-        )}
-      </div>
+      <ProjectList
+      sortedProjects={sortedProjects}
+      deleteProject={deleteProject}
+      editProject={editProject}
+      />
+
     </Layout>
   );
 }
