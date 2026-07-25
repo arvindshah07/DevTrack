@@ -7,24 +7,7 @@ import StatsSection from "../components/projects/StatsSection";
 import ProjectList from "../components/projects/ProjectList";
 
 function Projects() {
-  const [projects, setProjects] = useState([
-    {
-      id: 1,
-      title: "DevTrack Dashboard",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      title: "Portfolio Website",
-      status: "Pending",
-    },
-    {
-      id: 3,
-      title: "Weather App",
-      status: "Completed",
-    },
-  ]);
-
+  const [projects, setProjects] = useState([]);
   const [projectName, setProjectName] = useState("");
   const [status, setStatus] = useState("Pending");
   const [editingId,setEditingId]=useState(null);
