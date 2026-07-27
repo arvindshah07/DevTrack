@@ -5,6 +5,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import NotFound from "./pages/NotFound"
+import Users from "./pages/Users";
 // now create route for all pages
 
 
@@ -17,6 +18,7 @@ function App() {
     <Route path="/dashboard" element={<Dashboard/>}/>
     <Route path="/projects" element={<Projects/>}/>
     <Route path="*" element={<NotFound/>}/>
+    <Route path="/users" element={<Users/>}/>
   </Routes>
   );
 }
