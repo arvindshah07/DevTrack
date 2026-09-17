@@ -6,12 +6,46 @@ function Login() {
 const [email,setEmail]=useState("");
 const[password,setPassword]=useState("");
 
-const handleSubmit=(e)=>{
+const handleSubmit = async (e) => {
   e.preventDefault();
-  console.log({
-    email,password
+
+  try {
+    const response = await fetch("http://localhost:3000/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    });
+
+    const data = await response.json();
+
+   if(!response.ok){
+    throw new Error(data.message);
+   }
+   localStorage.setItem("token",data.token);
+   console.log("Login successful");
+   getProfile();
+
+  } catch (error) {
+    console.error("Login error:", error);
+  }
+};
+
+const getProfile=async()=>{
+  const token=localStorage.getItem("token");
+
+  const response=await fetch("http://localhost:3000/users/profile",{
+    method:"GET",
+    headers:{
+      Authorization:`Bearer ${token}`
+    }
   });
-  
+  const data=await response.json();
+  console.log("Profile:",data);
 }
 
   return(
