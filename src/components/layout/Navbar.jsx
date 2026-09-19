@@ -5,7 +5,7 @@ import UserContext from '../../context/UserContext'
 
 function Navbar() {
   const navigate=useNavigate();
-  const {username,setUsername}=useContext(UserContext);
+  const {user}=useContext(UserContext);
   const handleLogout=()=>{
     localStorage.removeItem("token");
     navigate("/login");
@@ -17,11 +17,8 @@ function Navbar() {
        DevTrack
       </div>
       <h1 className="flex items-center pr-5 text-2xl font-bold text-white cursor-pointer hover:text-gray-200 transition">
-        {username}
-        <button onClick={()=>setUsername("React Master")}
-        className='border text-xl p-2 rounded-xl cursor-pointer ml-2'
-        >Change Name</button>
-        </h1>
+        {user ? user.name : "Loading..."}
+      </h1>
   </div>
       <button
        onClick={handleLogout}
