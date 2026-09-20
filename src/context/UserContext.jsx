@@ -3,11 +3,13 @@ const UserContext=createContext();
 
 function UserProvider({children}){
  const [user, setUser] = useState(null);
- 
+ const [loading,setLoading]=useState(true);
+
  useEffect(()=>{
   const getProfile=async ()=>{
     const token=localStorage.getItem("token");
     if(!token){
+      setLoading(false);
       return ;
     }
     try{
@@ -22,12 +24,15 @@ function UserProvider({children}){
       const data=await response.json();
       if(!response.ok){
         localStorage.removeItem("token");
+        setUser(null);
         return ;
       }
       setUser(data);
     }
     catch(error){
       console.error("Profile error :",error);
+    }finally{
+      setLoading(false);
     }
   };
   getProfile();
@@ -37,6 +42,7 @@ function UserProvider({children}){
   value={{
     user,
     setUser,
+    loading,
   }}
 >  
 {children}

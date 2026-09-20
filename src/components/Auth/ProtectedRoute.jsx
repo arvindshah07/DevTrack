@@ -1,11 +1,25 @@
 import { Navigate } from "react-router-dom";
+import { useContext } from "react";
+import UserContext from "../../context/UserContext";
 
-function ProtectedRoute({children}){
-  const token=localStorage.getItem("token");
-  if(!token){
-    return <Navigate to="/login" replace/>;
+function ProtectedRoute({ children }) {
+  const { user, loading } = useContext(UserContext);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg font-semibold">
+          Checking authentication...
+        </p>
+      </div>
+    );
   }
-  return children ;
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return children;
 }
 
 export default ProtectedRoute;
