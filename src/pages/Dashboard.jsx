@@ -5,10 +5,11 @@ import RecentActivity from "../components/dashboard/RecentActivity";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
 function Dashboard() {
-  const {username}=useContext(UserContext);
+  const {user}=useContext(UserContext);
   return (
     <Layout>
-      <WelcomeCard username={username}/>
+      <WelcomeCard username={user?.name}/>
+      
     <div className="flex flex-wrap gap-6 mt-8">
       <StatsCard title={"Projects"} value={0}/>
       <StatsCard title={"Completed"} value={0}/>

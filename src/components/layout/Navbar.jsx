@@ -1,33 +1,47 @@
-import React, { useContext } from 'react'
-import { useNavigate } from 'react-router-dom';
-import UserContext from '../../context/UserContext'
-
+import React, { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import UserContext from "../../context/UserContext";
 
 function Navbar() {
-  const navigate=useNavigate();
-  const {user}=useContext(UserContext);
-  const handleLogout=()=>{
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
     localStorage.removeItem("token");
+    setUser(null);
     navigate("/login");
-  }
+  };
+
   return (
-    <>
-  <div className='flex  bg-blue-600 justify-between shadow-md'>
-    <div className='h-16 text-white flex items-center px-6 text-3xl font-bold'>
-       DevTrack
+    <div className="flex items-center justify-between bg-blue-600 shadow-md h-16 px-6">
+      
+      {/* Logo */}
+      <div className="text-3xl font-bold text-white">
+        DevTrack
       </div>
-      <h1 className="flex items-center pr-5 text-2xl font-bold text-white cursor-pointer hover:text-gray-200 transition">
-        {user ? user.name : "Loading..."}
-      </h1>
-  </div>
-      <button
-       onClick={handleLogout}
-       className='px-3 py-2 ml-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition cursor-pointer'
-      >
-        Logout
-      </button>
-    </>
-  )
+
+      {/* User + Logout */}
+      <div className="flex items-center gap-4">
+        <div className="text-right text-white">
+          <p className="text-lg font-bold">
+            {user ? user.name : "Loading..."}
+          </p>
+
+          <p className="text-sm">
+            {user ? user.role : ""}
+          </p>
+        </div>
+
+        <button
+          onClick={handleLogout}
+          className="px-3 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 transition cursor-pointer"
+        >
+          Logout
+        </button>
+      </div>
+
+    </div>
+  );
 }
 
-export default Navbar
+export default Navbar;
