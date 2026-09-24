@@ -8,8 +8,7 @@ function Dashboard() {
   const {user}=useContext(UserContext);
   return (
     <Layout>
-      <WelcomeCard username={user?.name}/>
-      
+      <WelcomeCard/>
     <div className="flex flex-wrap gap-6 mt-8">
       <StatsCard title={"Projects"} value={0}/>
       <StatsCard title={"Completed"} value={0}/>
